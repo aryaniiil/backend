@@ -2,10 +2,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from src.auth import router as auth_router
-<<<<<<< HEAD
 from src.chat import router as chat_router
-=======
->>>>>>> 4a74b637411a5a68c61fcd8bc8eef01470b161d6
 
 app = FastAPI(title="Mobile Auth API")
 
@@ -20,10 +17,7 @@ app.add_middleware(
 
 # Include the auth router
 app.include_router(auth_router, prefix="/auth", tags=["auth"])
-<<<<<<< HEAD
 app.include_router(chat_router, prefix="/api", tags=["chat"])  # Add
-=======
->>>>>>> 4a74b637411a5a68c61fcd8bc8eef01470b161d6
 
 @app.get("/")
 def read_root():
