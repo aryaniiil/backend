@@ -7,7 +7,11 @@ import requests
 from pymongo import MongoClient
 from dotenv import load_dotenv
 from datetime import datetime
+<<<<<<< HEAD
 from typing import Optional, Dict, Any
+=======
+from typing import Optional
+>>>>>>> 4a74b637411a5a68c61fcd8bc8eef01470b161d6
 
 load_dotenv()
 
@@ -19,6 +23,7 @@ client = MongoClient(MONGO_URI)
 db = client.mobileauth  # database
 sessions_collection = db.sessions  # collection for sessionId storage
 users_collection = db.users  # collection for user details
+<<<<<<< HEAD
 preferences_collection = db.preferences
 
 router = APIRouter()
@@ -37,6 +42,11 @@ DEFAULT_PREFERENCES = {
 }
 
 
+=======
+
+router = APIRouter()
+
+>>>>>>> 4a74b637411a5a68c61fcd8bc8eef01470b161d6
 class OTPRequest(BaseModel):
     mobileNumber: str
 
@@ -61,6 +71,7 @@ class GoogleUserDetailsRequest(BaseModel):
     firstName: str
     lastName: Optional[str] = None
 
+<<<<<<< HEAD
 class AddMobileToGoogleUserRequest(BaseModel):
     clerkSessionId: str
     mobileNumber: str
@@ -96,6 +107,8 @@ def get_user_by_session(session_id: str):
     return user
 
 
+=======
+>>>>>>> 4a74b637411a5a68c61fcd8bc8eef01470b161d6
 @router.post("/send-otp")
 def send_otp(request: OTPRequest):
     url = f"https://2factor.in/API/V1/{API_KEY}/SMS/{request.mobileNumber}/AUTOGEN3"
@@ -217,6 +230,7 @@ def save_user_details(request: UserDetailsRequest):
             {"mobileNumber": request.mobileNumber},
             {"$set": user_data}
         )
+<<<<<<< HEAD
         user_id = existing_user["_id"]
     else:
         # Create new user
@@ -233,6 +247,12 @@ def save_user_details(request: UserDetailsRequest):
             "createdAt": datetime.utcnow(),
             "updatedAt": datetime.utcnow()
         })
+=======
+    else:
+        # Create new user
+        user_data["createdAt"] = datetime.utcnow()
+        users_collection.insert_one(user_data)
+>>>>>>> 4a74b637411a5a68c61fcd8bc8eef01470b161d6
 
     # Update session with user completion flag
     sessions_collection.update_one(
@@ -320,7 +340,10 @@ def save_google_user_details(request: GoogleUserDetailsRequest):
                 raise HTTPException(status_code=500, detail="Failed to update user record")
                 
             print(f"Updated existing user: {request.email}")
+<<<<<<< HEAD
             user_id = existing_user["_id"]
+=======
+>>>>>>> 4a74b637411a5a68c61fcd8bc8eef01470b161d6
 
         else:
             # --- Create New User ---
@@ -331,6 +354,7 @@ def save_google_user_details(request: GoogleUserDetailsRequest):
                 raise HTTPException(status_code=500, detail="Failed to create user record")
                 
             print(f"Created new user: {request.email}")
+<<<<<<< HEAD
             user_id = result.inserted_id
 
             # Create default preferences for new Google user
@@ -341,6 +365,8 @@ def save_google_user_details(request: GoogleUserDetailsRequest):
                 "createdAt": datetime.utcnow(),
                 "updatedAt": datetime.utcnow()
             })
+=======
+>>>>>>> 4a74b637411a5a68c61fcd8bc8eef01470b161d6
 
         return {
             "success": True, 
@@ -378,6 +404,12 @@ def get_user_profile_by_clerk_session(clerk_session_id: str):
     except Exception as e:
         print(f"Error getting user profile by Clerk session: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
+<<<<<<< HEAD
+=======
+class AddMobileToGoogleUserRequest(BaseModel):
+    clerkSessionId: str
+    mobileNumber: str
+>>>>>>> 4a74b637411a5a68c61fcd8bc8eef01470b161d6
 
 @router.post("/add-mobile-to-google-user")
 def add_mobile_to_google_user(request: AddMobileToGoogleUserRequest):
@@ -429,6 +461,7 @@ def add_mobile_to_google_user(request: AddMobileToGoogleUserRequest):
     except Exception as e:
         print(f"Error adding mobile number to Google user: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
+<<<<<<< HEAD
 
 # NEW ENDPOINTS FOR PREFERENCES
 
@@ -556,3 +589,5 @@ def update_user_details(request: UpdateUserDetailsRequest):
     except Exception as e:
         print(f"Error updating user details: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
+=======
+>>>>>>> 4a74b637411a5a68c61fcd8bc8eef01470b161d6
